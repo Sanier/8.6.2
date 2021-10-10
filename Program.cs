@@ -5,11 +5,12 @@ namespace _8._6._2
 {
     class Program
     {
+        static long sum = 0;
         static void Main(string[] args)
         {
             Url();
+            Console.WriteLine("Общий занимаемый размер: {0} байт",sum);
         }
-
         public static void Url()
         {
             Console.WriteLine("Пропишите путь до файла как в примере: C:/Users/user/Desktop/example.bin");
@@ -20,7 +21,6 @@ namespace _8._6._2
                 try
                 {
                     DirectoryInfo dir = new DirectoryInfo(filePath);
-                    //DirectoryInfo root = dir.Root;
                     var folders = dir.GetDirectories();
 
                     WriteFileInfo(dir);
@@ -39,14 +39,12 @@ namespace _8._6._2
         public static void WriteFolderInfo(DirectoryInfo[] folders)
         {
             Console.WriteLine();
-            Console.WriteLine("Папки: ");
-            Console.WriteLine();
 
             foreach (var folder in folders)
             {
                 try
                 {
-                    Console.WriteLine(folder.Name + $" - {DirectoryExtension.DirSize(folder)}байт");
+                    sum += DirectoryExtension.DirSize(folder);
                 }
                 catch (Exception e)
                 {
@@ -57,15 +55,12 @@ namespace _8._6._2
 
         public static void WriteFileInfo(DirectoryInfo rootFolder)
         {
-            Console.WriteLine();
-            Console.WriteLine("Файлы: ");
-            Console.WriteLine();
-
             foreach (var file in rootFolder.GetFiles())
-            {
-                Console.WriteLine(file.Name + $" - {file.Length} байт");
+            {                
+                sum += file.Length;
             }
         }
+
     }
 
     public static class DirectoryExtension
@@ -86,6 +81,5 @@ namespace _8._6._2
             }
             return size;
         }
-        
     }
 }
